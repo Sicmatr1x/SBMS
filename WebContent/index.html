@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<form id="login-form">
+		username:<input type="text" name="username"/><br>
+		password:<input type="text" name="password"/><br>
+		<input type="submit" name="submit" value="login"/><br><br><span name="info-span"></span>
+	</form>
+	
+	
+</body>
+<script>
+$(document).ready(function(){
+	$("#login-form input[name=submit]").click(function() {
+       
+		$.ajax({
+            url : "/SimpleSpringMVCSH/user/"+$("#player input[name=username]").val(),
+            type : "post",
+            data : {
+            	username:$("#player input[name=username]").val(),
+            	password:$("#player input[name=password]").val()
+            },  
+            dataType : "json",
+            success : function(data) {
+            	console.log(data);
+            	if(data.state === "success"){
+            		$("#login-form span[name=info-span]").text(data.state);
+            	}
+				if(data.state === "fail"){
+					$("#login-form span[name=info-span]").text(data.info);
+            	}
+				console.log("data=" + data);
+            },
+            error : function() {
+            	$("#login-form span[name=info-span]").text("ajax请求失败");
+            	console.log("ajax请求失败");
+            }
+        });//end ajax
+
+    });
+});
+</script>
+</html>
